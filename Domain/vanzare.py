@@ -8,13 +8,13 @@ def creeaza_vanzare(id_vanzare, titlu_carte, gen_carte, pret, tip_reducere):
     :param tip_reducere: tip reducere client (none, silver, gold) pentru carte(vanzare)
     :return:
     """
-    return {
-        'id': id_vanzare,
-        'titlu': titlu_carte,
-        'gen': gen_carte,
-        'pret': pret,
-        'tip': tip_reducere,
-    }
+    return [
+        id_vanzare,
+        titlu_carte,
+        gen_carte,
+        pret,
+        tip_reducere,
+    ]
 
 
 def get_id(vanzare):
@@ -23,7 +23,7 @@ def get_id(vanzare):
     :param vanzare: vanzarea
     :return: id-ul vanzarii date ca parametru
     """
-    return vanzare['id']
+    return vanzare[0]
 
 
 def get_titlu(vanzare):
@@ -32,7 +32,7 @@ def get_titlu(vanzare):
     :param vanzare: vanzarea
     :return: titlul cartii(vanzarii) date ca parametru
     """
-    return vanzare['titlu']
+    return vanzare[1]
 
 
 def get_gen(vanzare):
@@ -41,7 +41,7 @@ def get_gen(vanzare):
     :param vanzare: vanzarea
     :return: genul cartii(vanzarii) date ca parametru
     """
-    return vanzare['gen']
+    return vanzare[2]
 
 
 def get_pret(vanzare):
@@ -50,7 +50,7 @@ def get_pret(vanzare):
     :param vanzare: vanzarea
     :return: pretul cartii(vanzarii) date ca parametru
     """
-    return vanzare['pret']
+    return vanzare[3]
 
 
 def get_tip(vanzare):
@@ -59,7 +59,7 @@ def get_tip(vanzare):
     :param vanzare: vanzarea
     :return: tipul de reducere al cartii(vanzarii) date ca parametru
     """
-    return vanzare['tip']
+    return vanzare[4]
 
 def get_str(vanzare):
     """
