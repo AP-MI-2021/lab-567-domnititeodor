@@ -1,4 +1,6 @@
 from Domain.vanzare import get_str, get_titlu, get_gen, get_pret, get_tip, creeaza_vanzare
+from Logic.apply_discount import apply_discount
+from Logic.change_genre import change_genre
 from Logic.crud import create, read, update, delete
 
 
@@ -14,12 +16,17 @@ def show_menu():
 
 
 def handle_add(vanzari):
-    id_vanzare = int(input('Dati id-ul vanzarii: '))
-    titlu = input('Dati titlul cartii: ')
-    gen = input('Dati genul cartii: ')
-    pret = float(input('Dati pretul cartii: '))
-    tip = input('Dati tipul de reducere client al cartii: ')
-    return create(vanzari, id_vanzare, titlu, gen, pret, tip)
+    try:
+        id_vanzare = int(input('Dati id-ul vanzarii: '))
+        titlu = input('Dati titlul cartii: ')
+        gen = input('Dati genul cartii: ')
+        pret = float(input('Dati pretul cartii: '))
+        tip = input('Dati tipul de reducere client al cartii: ')
+        return create(vanzari, id_vanzare, titlu, gen, pret, tip)
+    except ValueError as ve:
+        print('Eroare: ', ve)
+
+    return vanzari
 
 
 def handle_show_all(vanzari):
@@ -37,18 +44,27 @@ def handle_show_details(vanzari):
 
 
 def handle_update(vanzari):
-    id_vanzare = int(input('Dati id-ul vanzarii care se actualizeaza: '))
-    titlu = input('Dati noul titlu al cartii: ')
-    gen = input('Dati noul gen al cartii: ')
-    pret = float(input('Dati noul pret al cartii: '))
-    tip = input('Dati noul tipul de reducere client al cartii: ')
-    return update(vanzari, creeaza_vanzare(id_vanzare,titlu,gen,pret,tip))
+    try:
+        id_vanzare = int(input('Dati id-ul vanzarii care se actualizeaza: '))
+        titlu = input('Dati noul titlu al cartii: ')
+        gen = input('Dati noul gen al cartii: ')
+        pret = float(input('Dati noul pret al cartii: '))
+        tip = input('Dati noul tipul de reducere client al cartii: ')
+        return update(vanzari, creeaza_vanzare(id_vanzare, titlu, gen, pret, tip))
+    except ValueError as ve:
+        print('Eroare:', ve)
+
+    return vanzari
 
 
 def handle_delete(vanzari):
-    id_vanzare = int(input('Dati id-ul vanzarii pentru care se face stergerea: '))
-    vanzari = delete(vanzari, id_vanzare)
-    print('Stergea a fost efectuata cu succes')
+    try:
+        id_vanzare = int(input('Dati id-ul vanzarii pentru care se face stergerea: '))
+        vanzari = delete(vanzari, id_vanzare)
+        print('Stergea a fost efectuata cu succes')
+        return vanzari
+    except ValueError as ve:
+        print('Eroare: ', ve)
     return vanzari
 
 
@@ -79,12 +95,34 @@ def handle_crud(vanzari):
     return vanzari
 
 
+def handle_apply_discount(vanzari):
+    vanzari = apply_discount(vanzari)
+    print('Aplicarea reducerii a fost efectuata cu succes')
+    return vanzari
+
+
+def handle_change_genre(vanzari):
+    try:
+        titlu = input('Dati titlul al cartii pe care doriti sa o modificati: ')
+        gennou = input('Dati noul gen: ')
+        vanzari = change_genre(vanzari, titlu, gennou)
+        print('Modificarea genului a fost efectuata cu succes')
+        return vanzari
+    except ValueError as ve:
+        print('Eroare: ', ve)
+    return vanzari
+
+
 def run_ui(vanzari):
     while True:
         show_menu()
         optiune = input('Optiune aleasa: ')
         if optiune == '1':
             vanzari = handle_crud(vanzari)
+        elif optiune == '2':
+            vanzari = handle_apply_discount(vanzari)
+        elif optiune == '3':
+            vanzari = handle_change_genre(vanzari)
         elif optiune == 'x':
             break
         else:
