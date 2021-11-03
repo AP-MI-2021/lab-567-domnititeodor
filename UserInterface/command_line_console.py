@@ -53,12 +53,15 @@ def new_menu(vanzari):
     while True:
         print("Intr-o linie de comanda se vor scrie comenzile "
               "care se vor aplica listei, separate prin ';', elementele acestora fiind separate prin ','.")
-        print("Atentie ! Comanda se face scrie cu majuscula si dupa fiecare separator se va pune un spatiu."
-              "O comanda care nu se regaseste in lista de mai jos "
-              "nu va duce la modificarea listei. \n ")
-        print("1.Pentru adaugare in lista: Adaugare")
-        print("2.Pentru stergerea unei vanzari: Sterge")
-        print("3.Pentru modificarea unei vanzari: Modificare")
+        print("Atentie ! Comanda se face scrie cu majuscula si dupa fiecare separator(; si ,) se va pune un spatiu.")
+        print("O comanda care nu se regaseste in lista de mai jos nu va duce la modificarea listei.")
+        print("O comanda trebuie sa aiba toate campurile nenule \n ")
+
+        print("1.Pentru adaugare in lista: Adaugare, id_vanzare(valoare intreaga), titlu, gen, "
+              "pret(valoare reala), tip(none, silver sau gold)")
+        print("2.Pentru stergerea unei vanzari: Sterge, id_vanzare(valoare intreaga)")
+        print("3.Pentru modificarea unei vanzari: Modificare, id_vanzare(valoare intreaga), titlu, gen, "
+              "pret(valoare reala), tip(none, silver sau gold)")
         print("4.Pentru afisarea tuturor vanzarilor: ShowAll")
         print("5. Pentru a iesire din meniu: Exit (la final)")
         lst_cmd = read_list()
