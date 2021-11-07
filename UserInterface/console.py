@@ -2,6 +2,9 @@ from Domain.vanzare import get_str, get_titlu, get_gen, get_pret, get_tip, creea
 from Logic.apply_discount import apply_discount
 from Logic.change_genre import change_genre
 from Logic.crud import create, read, update, delete
+from Logic.distinct_titles import distinct_titles
+from Logic.min_price import min_price
+from Logic.sort_price import sort_price
 
 
 def show_menu():
@@ -113,6 +116,23 @@ def handle_change_genre(vanzari):
     return vanzari
 
 
+def handle_min_price(vanzari):
+    rezultat = min_price(vanzari)
+    for gen in rezultat:
+        print(f'Pretul minim pentru genul {gen} este {rezultat[gen]}')
+
+
+def handle_sort_price(vanzari):
+    vanzari = sort_price(vanzari)
+    handle_show_all(vanzari)
+
+
+def handle_distinct_titles(vanzari):
+    rezultat = distinct_titles(vanzari)
+    for gen in rezultat:
+        print(f'Numarul de titluri distincte pentru genul {gen} este {rezultat[gen]}')
+
+
 def run_ui(vanzari):
     while True:
         show_menu()
@@ -123,6 +143,12 @@ def run_ui(vanzari):
             vanzari = handle_apply_discount(vanzari)
         elif optiune == '3':
             vanzari = handle_change_genre(vanzari)
+        elif optiune == '4':
+            handle_min_price(vanzari)
+        elif optiune == '5':
+            handle_sort_price(vanzari)
+        elif optiune == '6':
+            handle_distinct_titles(vanzari)
         elif optiune == 'x':
             break
         else:

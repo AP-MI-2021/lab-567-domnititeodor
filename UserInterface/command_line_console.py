@@ -63,7 +63,7 @@ def new_menu(vanzari):
         print("3.Pentru modificarea unei vanzari: Modificare, id_vanzare(valoare intreaga), titlu, gen, "
               "pret(valoare reala), tip(none, silver sau gold)")
         print("4.Pentru afisarea tuturor vanzarilor: ShowAll")
-        print("5. Pentru a iesire din meniu: Exit (la final)")
+        print("5. Pentru iesire din meniu: Exit (la final)")
         lst_cmd = read_list()
         for comanda in lst_cmd:
             comanda = comanda.split(', ')

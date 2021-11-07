@@ -16,6 +16,8 @@ def create(lst_vanzari, id_vanzare: int, titlu_carte, gen_carte, pret, tip_reduc
         raise ValueError(f'Exista deja o vanzare cu id-ul {id_vanzare}')
     if tip_reducere != 'silver' and tip_reducere != 'gold' and tip_reducere != 'none':
         raise ValueError('Ati introdus un tip de reducere care nu exista')
+    if pret < 0:
+        raise ValueError('Pretul nu poate sa fie negativ')
     vanzare = creeaza_vanzare(id_vanzare, titlu_carte, gen_carte, pret, tip_reducere)
     return lst_vanzari + [vanzare]
 
