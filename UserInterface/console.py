@@ -5,6 +5,7 @@ from Logic.crud import create, read, update, delete
 from Logic.distinct_titles import distinct_titles
 from Logic.min_price import min_price
 from Logic.sort_price import sort_price
+from Logic.undo_redo import do_undo, do_redo
 
 
 def show_menu():
@@ -14,18 +15,19 @@ def show_menu():
     print('4. Determinarea pretului minim pentru fiecare gen')
     print('5. Ordonarea vanzarilor crescator dupa pret')
     print('6. Afisarea numarului de titluri distincte pentru fiecare gen')
-    print('7. Undo')
+    print('u. Undo')
+    print('r. Redo')
     print('x. Exit')
 
 
-def handle_add(vanzari):
+def handle_add(vanzari, undo_list, redo_list):
     try:
         id_vanzare = int(input('Dati id-ul vanzarii: '))
         titlu = input('Dati titlul cartii: ')
         gen = input('Dati genul cartii: ')
         pret = float(input('Dati pretul cartii: '))
         tip = input('Dati tipul de reducere client al cartii: ')
-        return create(vanzari, id_vanzare, titlu, gen, pret, tip)
+        return create(vanzari, id_vanzare, titlu, gen, pret, tip, undo_list, redo_list)
     except ValueError as ve:
         print('Eroare: ', ve)
 
@@ -46,24 +48,24 @@ def handle_show_details(vanzari):
     print(f'Tip reducere client pentru carte: {get_tip(vanzare)}')
 
 
-def handle_update(vanzari):
+def handle_update(vanzari, undo_list, redo_list):
     try:
         id_vanzare = int(input('Dati id-ul vanzarii care se actualizeaza: '))
         titlu = input('Dati noul titlu al cartii: ')
         gen = input('Dati noul gen al cartii: ')
         pret = float(input('Dati noul pret al cartii: '))
         tip = input('Dati noul tipul de reducere client al cartii: ')
-        return update(vanzari, creeaza_vanzare(id_vanzare, titlu, gen, pret, tip))
+        return update(vanzari, creeaza_vanzare(id_vanzare, titlu, gen, pret, tip), undo_list, redo_list)
     except ValueError as ve:
         print('Eroare:', ve)
 
     return vanzari
 
 
-def handle_delete(vanzari):
+def handle_delete(vanzari, undo_list, redo_list):
     try:
         id_vanzare = int(input('Dati id-ul vanzarii pentru care se face stergerea: '))
-        vanzari = delete(vanzari, id_vanzare)
+        vanzari = delete(vanzari, id_vanzare, undo_list, redo_list)
         print('Stergea a fost efectuata cu succes')
         return vanzari
     except ValueError as ve:
@@ -71,7 +73,7 @@ def handle_delete(vanzari):
     return vanzari
 
 
-def handle_crud(vanzari):
+def handle_crud(vanzari, undo_list, redo_list):
     while True:
         print('1. Adaugare')
         print('2. Modificare')
@@ -82,11 +84,11 @@ def handle_crud(vanzari):
 
         optiune = input('Optiune aleasa: ')
         if optiune == '1':
-            vanzari = handle_add(vanzari)
+            vanzari = handle_add(vanzari, undo_list, redo_list)
         elif optiune == '2':
-            vanzari = handle_update(vanzari)
+            vanzari = handle_update(vanzari, undo_list, redo_list)
         elif optiune == '3':
-            vanzari = handle_delete(vanzari)
+            vanzari = handle_delete(vanzari, undo_list, redo_list)
         elif optiune == 'a':
             handle_show_all(vanzari)
         elif optiune == 'd':
@@ -98,17 +100,17 @@ def handle_crud(vanzari):
     return vanzari
 
 
-def handle_apply_discount(vanzari):
-    vanzari = apply_discount(vanzari)
+def handle_apply_discount(vanzari, undo_list, redo_list):
+    vanzari = apply_discount(vanzari, undo_list, redo_list)
     print('Aplicarea reducerii a fost efectuata cu succes')
     return vanzari
 
 
-def handle_change_genre(vanzari):
+def handle_change_genre(vanzari, undo_list, redo_list):
     try:
-        titlu = input('Dati titlul al cartii pe care doriti sa o modificati: ')
+        titlu = input('Dati titlul cartii pe care doriti sa o modificati: ')
         gennou = input('Dati noul gen: ')
-        vanzari = change_genre(vanzari, titlu, gennou)
+        vanzari = change_genre(vanzari, titlu, gennou, undo_list, redo_list)
         print('Modificarea genului a fost efectuata cu succes')
         return vanzari
     except ValueError as ve:
@@ -133,22 +135,40 @@ def handle_distinct_titles(vanzari):
         print(f'Numarul de titluri distincte pentru genul {gen} este {rezultat[gen]}')
 
 
-def run_ui(vanzari):
+def handle_undo(vanzari, undo_list, redo_list):
+    undo_result = do_undo(undo_list, redo_list, vanzari)
+    if undo_result is not None:
+        return undo_result
+    return vanzari
+
+
+def handle_redo(vanzari, undo_list, redo_list):
+    redo_result = do_redo(undo_list, redo_list, vanzari)
+    if redo_result is not None:
+        return redo_result
+    return vanzari
+
+
+def run_ui(vanzari, undo_list, redo_list):
     while True:
         show_menu()
         optiune = input('Optiune aleasa: ')
         if optiune == '1':
-            vanzari = handle_crud(vanzari)
+            vanzari = handle_crud(vanzari, undo_list, redo_list)
         elif optiune == '2':
-            vanzari = handle_apply_discount(vanzari)
+            vanzari = handle_apply_discount(vanzari, undo_list, redo_list)
         elif optiune == '3':
-            vanzari = handle_change_genre(vanzari)
+            vanzari = handle_change_genre(vanzari, undo_list, redo_list)
         elif optiune == '4':
             handle_min_price(vanzari)
         elif optiune == '5':
             handle_sort_price(vanzari)
         elif optiune == '6':
             handle_distinct_titles(vanzari)
+        elif optiune == 'u':
+            vanzari = handle_undo(vanzari, undo_list, redo_list)
+        elif optiune == 'r':
+            vanzari = handle_redo(vanzari, undo_list, redo_list)
         elif optiune == 'x':
             break
         else:

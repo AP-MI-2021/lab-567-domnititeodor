@@ -12,12 +12,12 @@ def get_data():
 
 def test_change_genre():
     vanzari = get_data()
-    vanzari = change_genre(vanzari, 'v1', 'gennou1')
-    vanzari = change_genre(vanzari, 'v2', 'gennou2')
+    vanzari = change_genre(vanzari, 'v1', 'gennou1', [], [])
+    vanzari = change_genre(vanzari, 'v2', 'gennou2', [], [])
     assert get_gen(vanzari[0]) == 'gennou1'
     assert get_gen(vanzari[1]) == 'gennou2'
     try:
-        _ = change_genre(vanzari, 'v8' , 'gennou8')
+        _ = change_genre(vanzari, 'v8' , 'gennou8', [], [])
         assert False
     except ValueError:
         assert True  # sau pass

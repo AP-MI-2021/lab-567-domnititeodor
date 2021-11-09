@@ -1,10 +1,12 @@
 from Domain.vanzare import get_tip, creeaza_vanzare, get_id, get_titlu, get_pret, get_gen
 
 
-def apply_discount(lst_vanzari):
+def apply_discount(lst_vanzari, undo_list, redo_list):
     """
     Reduce pretul unei vanzari in functie de tipul de reducere pe care il are (silver - 5% , gold - 10%)
     :param lst_vanzari: lista de vanzari
+    :param undo_list: o lista care memoreaza lista de vanzari inainte de modificari
+    :param redo_list: o lista care memoreaza lista de vanzari dupa modificari
     :return: lista de vanzari dupa reducerea pretului fiecarui element
     """
     new_vanzari = []
@@ -29,4 +31,7 @@ def apply_discount(lst_vanzari):
             new_vanzari.append(n_vanzare)
         else:
             new_vanzari.append(vanzare)
+
+    undo_list.append(lst_vanzari)
+    redo_list.clear()
     return new_vanzari

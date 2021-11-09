@@ -1,12 +1,14 @@
 from Domain.vanzare import get_titlu, get_id, creeaza_vanzare, get_pret, get_tip
 
 
-def change_genre(lst_vanzari, titlu, gen_nou):
+def change_genre(lst_vanzari, titlu, gen_nou, undo_list, redo_list):
     """
     Modifica genul unui titlu dat din lista de vanzari
     :param lst_vanzari: lista de vanzari
     :param titlu: titlul dat spre modificare
     :param gen_nou: noul gen al titlui
+    :param undo_list: o lista care memoreaza lista de vanzari inainte de modificari
+    :param redo_list: o lista care memoreaza lista de vanzari dupa modificari
     :return: o lista de vanzari in care titlul are genul nou dat
     """
     if title_in_lst(lst_vanzari,titlu) is None:
@@ -24,6 +26,8 @@ def change_genre(lst_vanzari, titlu, gen_nou):
             new_vanzari.append(n_vanzare)
         else:
             new_vanzari.append(vanzare)
+    undo_list.append(lst_vanzari)
+    redo_list.clear()
     return new_vanzari
 
 

@@ -13,14 +13,14 @@ def get_data():
 
 def test_create():
     vanzari = get_data()
-    params = (5, 'vnew', 'gen new', 27, 'gold')
-    v_new = creeaza_vanzare(*params)
+    params = (5, 'vnew', 'gen new', 27, 'gold', [], [])
+    v_new = creeaza_vanzare(*params[:-2])
     new_vanzari = create(vanzari, *params)
     assert len(new_vanzari) == len(vanzari) + 1
     assert v_new in new_vanzari
 
     # testam daca se lanseaza exceptie pt id duplicat
-    params2 = (5, 'vnew2', 'gen new', 26, 'none')
+    params2 = (5, 'vnew2', 'gen new', 26, 'none', [], [])
     try:
         _ = create(new_vanzari, *params2)
         assert False
@@ -38,14 +38,14 @@ def test_read():
 def test_update():
     vanzari = get_data()
     v_updated = creeaza_vanzare(1, 'vnew', 'gen new', 7.2, 'gold')
-    updated = update(vanzari, v_updated)
+    updated = update(vanzari, v_updated, [], [])
     assert v_updated in updated
     assert v_updated not in vanzari
     assert len(updated) == len(vanzari)
     try:
-        params2 = (7, 'vnew2', 'gen new', 26, 'none')
-        v_updated = creeaza_vanzare(*params2)
-        _ = update(vanzari, v_updated)
+        params2 = (7, 'vnew2', 'gen new', 26, 'none', [], [])
+        v_updated = creeaza_vanzare(*params2[:-2])
+        _ = update(vanzari, v_updated, [], [])
         assert False
     except ValueError:
         assert True  # sau pass
@@ -55,13 +55,13 @@ def test_delete():
     vanzari = get_data()
     to_delete = 3
     v_deleted = read(vanzari, to_delete)
-    deleted = delete(vanzari, to_delete)
+    deleted = delete(vanzari, to_delete, [], [])
     assert v_deleted not in deleted
     assert v_deleted in vanzari
     assert len(deleted) == len(vanzari) - 1
     try:
         to_delete = 7
-        _ = delete(vanzari, to_delete)
+        _ = delete(vanzari, to_delete, [], [])
         assert False
     except ValueError:
         assert True  # sau pass

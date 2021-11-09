@@ -12,7 +12,7 @@ def get_data():
 
 def test_discount():
     vanzari = get_data()
-    new_vanzari = apply_discount(vanzari)
+    new_vanzari = apply_discount(vanzari, [], [])
     assert len(new_vanzari) == 4
     assert get_pret(new_vanzari[0]) == 57
     assert get_pret(new_vanzari[1]) == 20
