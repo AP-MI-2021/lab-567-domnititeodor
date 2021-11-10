@@ -5,7 +5,7 @@ from Tests.test_discount import test_discount
 from Tests.test_distinct_titles import test_distinct_titles
 from Tests.test_min_price import test_min_price
 from Tests.test_sort_price import test_sort_price
-from Tests.test_undo_redo import test_undo_redo
+from Tests.test_undo_redo import test_all_undo_redo
 from UserInterface.command_line_console import new_menu
 from UserInterface.console import run_ui
 
@@ -48,5 +48,5 @@ if __name__ == '__main__':
     test_min_price()
     test_sort_price()
     test_distinct_titles()
-    test_undo_redo()
+    test_all_undo_redo()
     main()
