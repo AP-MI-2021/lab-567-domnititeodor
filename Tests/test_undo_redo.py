@@ -12,14 +12,17 @@ def test_undo_redo():
     vanzari = create(vanzari, 1, 'Harry Potter', 'Fantasy', 24.99, 'none', undo_list, redo_list)
     vanzari = create(vanzari, 2, 'Shining', 'Horror', 21, 'silver', undo_list, redo_list)
     vanzari = create(vanzari, 3, '1984', 'Dystopian', 21, 'gold', undo_list, redo_list)
+    vanzare1 = creeaza_vanzare(1, 'Harry Potter', 'Fantasy', 24.99, 'none')
+    vanzare2 = creeaza_vanzare(2, 'Shining', 'Horror', 21, 'silver')
+    vanzare3 = creeaza_vanzare(3, '1984', 'Dystopian', 21, 'gold')
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [2, 'Shining', 'Horror', 21, 'silver']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare2
     assert read(vanzari, 3) is None
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
+    assert vanzari[0] == vanzare1
     assert read(vanzari, 2) is None
     assert read(vanzari, 3) is None
     if len(undo_list) > 0:
@@ -37,35 +40,36 @@ def test_undo_redo():
     vanzari = create(vanzari, 3, '1984', 'Dystopian', 21, 'gold', undo_list, redo_list)
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [2, 'Shining', 'Horror', 21, 'silver']
-    assert vanzari[2] == [3, '1984', 'Dystopian', 21, 'gold']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare2
+    assert vanzari[2] == vanzare3
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [2, 'Shining', 'Horror', 21, 'silver']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare2
     assert read(vanzari, 3) is None
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [2, 'Shining', 'Horror', 21, 'silver']
-    assert vanzari[2] == [3, '1984', 'Dystopian', 21, 'gold']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare2
+    assert vanzari[2] == vanzare3
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
     vanzari = create(vanzari, 4, 'Carrie', 'Horror', 24, 'none', undo_list, redo_list)
+    vanzare4 = creeaza_vanzare(4, 'Carrie', 'Horror', 24, 'none')
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [4, 'Carrie', 'Horror', 24, 'none']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare4
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
+    assert vanzari[0] == vanzare1
     assert read(vanzari, 4) is None
     if len(undo_list) > 0:
         vanzari = do_undo(undo_list, redo_list, vanzari)
@@ -73,16 +77,16 @@ def test_undo_redo():
     assert read(vanzari, 4) is None
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
+    assert vanzari[0] == vanzare1
     assert read(vanzari, 4) is None
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [4, 'Carrie', 'Horror', 24, 'none']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare4
     if len(redo_list) > 0:
         vanzari = do_redo(undo_list, redo_list, vanzari)
-    assert vanzari[0] == [1, 'Harry Potter', 'Fantasy', 24.99, 'none']
-    assert vanzari[1] == [4, 'Carrie', 'Horror', 24, 'none']
+    assert vanzari[0] == vanzare1
+    assert vanzari[1] == vanzare4
 
 
 def test_undo_redo_update():
